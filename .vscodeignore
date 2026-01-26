@@ -1,0 +1,16 @@
+.vscode/**
+.vscode-test/**
+src/**
+.gitignore
+.github/**
+output_sessions/**
+esbuild.js
+tsconfig.json
+tsconfig.mcp.json
+scripts/**
+**/*.ts
+**/*.map
+node_modules/**
+*.db
+*.db-wal
+*.db-shm

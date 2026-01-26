@@ -1,0 +1,80 @@
+{
+  "name": "m365-update",
+  "displayName": "M365 UPDATE",
+  "description": "Microsoft 365 ロードマップの検索・詳細取得を Copilot Chat から実行できる VS Code 拡張機能",
+  "version": "0.1.0",
+  "publisher": "yamapan",
+  "license": "CC-BY-NC-4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juyamagu/m365-update"
+  },
+  "bugs": {
+    "url": "https://github.com/juyamagu/m365-update/issues"
+  },
+  "homepage": "https://github.com/juyamagu/m365-update#readme",
+  "icon": "resources/icon.png",
+  "galleryBanner": {
+    "color": "#0078D4",
+    "theme": "dark"
+  },
+  "engines": {
+    "vscode": "^1.96.0"
+  },
+  "categories": [
+    "Other",
+    "Data Science"
+  ],
+  "keywords": [
+    "Microsoft 365",
+    "M365",
+    "Roadmap",
+    "Copilot",
+    "MCP"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "type": "module",
+  "contributes": {
+    "commands": [
+      {
+        "command": "m365-update.syncRoadmap",
+        "title": "M365 UPDATE: Sync Roadmap"
+      }
+    ],
+    "mcpServers": {
+      "m365-update": {
+        "command": "node",
+        "args": [
+          "${extensionPath}/dist/mcp/index.js"
+        ]
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "npm run build:extension && npm run build:mcp",
+    "build:extension": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
+    "build:mcp": "tsc -p tsconfig.mcp.json && node scripts/copy-schema.mjs",
+    "watch": "tsc -watch -p ./",
+    "dev:mcp": "tsx src/mcp/index.ts",
+    "inspect": "npx @modelcontextprotocol/inspector tsx src/mcp/index.ts",
+    "lint": "eslint src --ext ts",
+    "test": "vitest run",
+    "package": "vsce package"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.25.0",
+    "better-sqlite3": "^12.5.0"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.2",
+    "@types/vscode": "^1.96.0",
+    "esbuild": "^0.25.0",
+    "tsx": "^4.21.0",
+    "typescript": "^5.7.3",
+    "vitest": "^4.0.15",
+    "@vscode/vsce": "^3.2.0"
+  }
+}

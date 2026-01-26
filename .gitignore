@@ -1,0 +1,39 @@
+node_modules/
+dist/
+*.vsix
+.m365-update/
+*.db
+*.db-wal
+*.db-shm
+
+# Test files
+src/mcp/test-*.ts
+
+# Output
+output_sessions/
+
+# GitHub Copilot/Agent files (user-specific)
+.github/prompts/
+.github/skills/
+.github/instructions/
+AGENTS.md
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+*.swp
+*.swo
+.idea/
+*.code-workspace
+.vscode/settings.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.npm/
+.eslintcache
