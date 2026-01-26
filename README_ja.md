@@ -20,6 +20,8 @@
 
 ---
 
+![Demo](docs/screenshots/demo.gif)
+
 ## ✨ 特徴
 
 - 🔍 **自然言語検索**: Copilot Chat で「Teams の新機能を教えて」と聞くだけ

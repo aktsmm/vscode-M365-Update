@@ -20,7 +20,7 @@
 
 ---
 
-<!-- ![Demo](docs/screenshots/demo.gif) -->
+![Demo](docs/screenshots/demo.gif)
 
 ## ✨ Features
 
