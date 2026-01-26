@@ -13,9 +13,7 @@ src/mcp/test-*.ts
 output_sessions/
 
 # GitHub Copilot/Agent files (user-specific)
-.github/prompts/
-.github/skills/
-.github/instructions/
+.github/
 AGENTS.md
 
 # OS
