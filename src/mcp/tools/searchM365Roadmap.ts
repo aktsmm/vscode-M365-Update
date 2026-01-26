@@ -83,7 +83,8 @@ export const searchM365RoadmapSchema = {
       },
       limit: {
         type: "number",
-        description: "Maximum number of results (default: 15). Set higher to get more results.",
+        description:
+          "Maximum number of results (default: 15). Set higher to get more results.",
       },
       offset: {
         type: "number",
@@ -106,8 +107,15 @@ export function handleSearchM365Roadmap(
   // 日付指定がない場合は過去1ヶ月をデフォルトにする
   let dateFrom = params.dateFrom;
   let dateTo = params.dateTo;
-  
-  if (!dateFrom && !dateTo && !params.query && !params.products && !params.platforms && !params.status) {
+
+  if (
+    !dateFrom &&
+    !dateTo &&
+    !params.query &&
+    !params.products &&
+    !params.platforms &&
+    !params.status
+  ) {
     // Key Highlights モード: 日付・クエリ・フィルタがない場合は過去1ヶ月、全件返す
     const now = new Date();
     const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, 1);

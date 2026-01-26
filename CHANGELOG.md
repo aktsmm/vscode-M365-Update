@@ -14,6 +14,14 @@ All notable changes to the "M365 UPDATE MCP" extension will be documented in thi
 
 - LLM が Key Highlights を選びやすいよう全件のデータを提供
 
+## [0.2.8] - 2026-01-26
+
+### Improved
+
+- 検索結果に description サマリ（200文字）を追加
+- デフォルトで全件返却（フィルタなしの場合は過去1ヶ月）
+- LLM が Key Highlights を選びやすいように改善
+
 ## [0.2.7] - 2026-01-26
 
 ### Improved

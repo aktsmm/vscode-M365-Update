@@ -52,8 +52,9 @@ Ask Copilot Chat like this:
 
 ### Default Behavior
 
-- **No filters**: Returns last 1 month's updates (15 items)
+- **No filters**: Returns last 1 month's updates (ALL items with description summary)
 - **All results include**: `roadmapUrl` to official M365 Roadmap page
+- **Description summary**: First 200 characters for quick overview
 
 ## 🛠️ MCP Tools
 
