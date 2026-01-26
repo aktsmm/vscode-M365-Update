@@ -7,12 +7,12 @@
   "license": "CC-BY-NC-4.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/juyamagu/m365-update"
+    "url": "https://github.com/aktsmm/vscode-M365-Update"
   },
   "bugs": {
-    "url": "https://github.com/juyamagu/m365-update/issues"
+    "url": "https://github.com/aktsmm/vscode-M365-Update/issues"
   },
-  "homepage": "https://github.com/juyamagu/m365-update#readme",
+  "homepage": "https://github.com/aktsmm/vscode-M365-Update#readme",
   "icon": "resources/icon.png",
   "galleryBanner": {
     "color": "#0078D4",
