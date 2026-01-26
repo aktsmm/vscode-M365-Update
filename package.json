@@ -22,15 +22,18 @@
     "vscode": "^1.96.0"
   },
   "categories": [
-    "Other",
-    "Data Science"
+    "AI",
+    "Chat",
+    "Other"
   ],
   "keywords": [
     "Microsoft 365",
     "M365",
+    "Microsoft",
     "Roadmap",
     "Copilot",
-    "MCP"
+    "MCP",
+    "Updates"
   ],
   "activationEvents": [
     "onStartupFinished"
