@@ -33,6 +33,7 @@
 
 1. Search for "M365 UPDATE" in VS Code Extension Marketplace
 2. Or run: `ext install yamapan.m365-update`
+3. Reload VS Code
 
 ## 🎯 Usage
 

@@ -39,7 +39,8 @@ export const searchM365RoadmapSchema = {
   name: "search_m365_roadmap",
   description:
     "Search Microsoft 365 Roadmap features. Returns lightweight metadata (id, title, status, products, GA date). " +
-    "Use get_m365_update to retrieve full details including description.",
+    "Use get_m365_update to retrieve full details including description. " +
+    "Respond in the same language as the user's query (e.g., Japanese if asked in Japanese).",
   inputSchema: {
     type: "object",
     properties: {

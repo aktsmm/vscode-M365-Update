@@ -21,7 +21,8 @@ export const getM365UpdateSchema = {
   description:
     "Retrieve complete details of a specific M365 Roadmap feature by ID. " +
     "Includes full description, platforms, cloud instances, and availability details. " +
-    "Use after search_m365_roadmap to get detailed content.",
+    "Use after search_m365_roadmap to get detailed content. " +
+    "Respond in the same language as the user's query (e.g., Japanese if asked in Japanese).",
   inputSchema: {
     type: "object",
     properties: {

@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE" extension will be documented in this file.
 
+## [0.1.2] - 2026-01-26
+
+### Improved
+
+- ツールが日本語で質問された場合は日本語で回答するよう改善
+- README のインストール手順を簡略化
+
 ## [0.1.1] - 2026-01-26
 
 ### Fixed
