@@ -2,6 +2,17 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.3.5] - 2026-01-27
+
+### Added
+
+- 🚀 **事前同期済みデータベース同梱**: インストール直後から検索可能（約1900件のデータを同梱）
+- `generate-seed-db` スクリプト追加: パッケージ公開時に自動でAPIからデータを取得
+
+### Improved
+
+- 初回起動時の同期待ち時間を大幅短縮
+
 ## [0.3.3] - 2026-01-26
 
 ### Improved

@@ -10,9 +10,46 @@ import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 import { homedir } from "os";
 
+import { copyFileSync } from "fs";
+
 // ESM-friendly __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+/**
+ * seed.db のパスを取得（パッケージ同梱）
+ */
+function getSeedDatabasePath(): string {
+  // dist/mcp/database/database.js から resources/seed.db への相対パス
+  return join(__dirname, "..", "..", "..", "resources", "seed.db");
+}
+
+/**
+ * seed.db をユーザーディレクトリにコピー（DBがない場合のみ）
+ */
+function copySeedDatabaseIfNeeded(targetPath: string): boolean {
+  // 既にDBが存在する場合はスキップ
+  if (existsSync(targetPath)) {
+    return false;
+  }
+
+  const seedPath = getSeedDatabasePath();
+  if (!existsSync(seedPath)) {
+    // seed.db がない場合（開発中など）はスキップ
+    return false;
+  }
+
+  // ディレクトリ作成
+  const targetDir = dirname(targetPath);
+  if (!existsSync(targetDir)) {
+    mkdirSync(targetDir, { recursive: true });
+  }
+
+  // コピー実行
+  copyFileSync(seedPath, targetPath);
+  console.error(`[m365-update] Initialized database from seed.db`);
+  return true;
+}
 
 /**
  * データベース設定
@@ -43,6 +80,9 @@ export function initializeDatabase(
   config: DatabaseConfig = {},
 ): Database.Database {
   const dbPath = config.path ?? getDefaultDatabasePath();
+
+  // seed.db からコピー（DBがない場合のみ）
+  copySeedDatabaseIfNeeded(dbPath);
 
   // ディレクトリ作成
   const dataDir = dirname(dbPath);

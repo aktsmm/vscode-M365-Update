@@ -2,7 +2,7 @@
   "name": "m365-update",
   "displayName": "M365 UPDATE MCP",
   "description": "Search and retrieve Microsoft 365 Roadmap features from Copilot Chat",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "publisher": "yamapan",
   "license": "CC-BY-NC-SA-4.0",
   "repository": {
@@ -56,7 +56,8 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "npm run build",
+    "vscode:prepublish": "npm run generate-seed-db && npm run build",
+    "generate-seed-db": "node scripts/generate-seed-db.mjs",
     "build": "npm run build:extension && npm run build:mcp",
     "build:extension": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node",
     "build:mcp": "tsc -p tsconfig.mcp.json && node scripts/copy-schema.mjs",
