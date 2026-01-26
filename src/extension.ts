@@ -18,15 +18,37 @@ async function registerMcpServer(
   // OS に応じた mcp.json パスを決定
   let mcpJsonPath: string;
   if (process.platform === "win32") {
-    mcpJsonPath = path.join(os.homedir(), "AppData", "Roaming", "Code", "User", "mcp.json");
+    mcpJsonPath = path.join(
+      os.homedir(),
+      "AppData",
+      "Roaming",
+      "Code",
+      "User",
+      "mcp.json",
+    );
   } else if (process.platform === "darwin") {
-    mcpJsonPath = path.join(os.homedir(), "Library", "Application Support", "Code", "User", "mcp.json");
+    mcpJsonPath = path.join(
+      os.homedir(),
+      "Library",
+      "Application Support",
+      "Code",
+      "User",
+      "mcp.json",
+    );
   } else {
-    mcpJsonPath = path.join(os.homedir(), ".config", "Code", "User", "mcp.json");
+    mcpJsonPath = path.join(
+      os.homedir(),
+      ".config",
+      "Code",
+      "User",
+      "mcp.json",
+    );
   }
 
   // 拡張機能の MCP サーバーパス（スラッシュに統一）
-  const mcpServerPath = path.join(context.extensionPath, "dist", "mcp", "index.js").replace(/\\/g, "/");
+  const mcpServerPath = path
+    .join(context.extensionPath, "dist", "mcp", "index.js")
+    .replace(/\\/g, "/");
 
   try {
     let mcpConfig: { servers?: Record<string, unknown>; inputs?: unknown[] } = {
@@ -36,8 +58,16 @@ async function registerMcpServer(
 
     // 既存の mcp.json を読み込み
     if (fs.existsSync(mcpJsonPath)) {
-      const content = fs.readFileSync(mcpJsonPath, "utf-8");
-      mcpConfig = JSON.parse(content);
+      let content = fs.readFileSync(mcpJsonPath, "utf-8");
+      // 末尾カンマを除去（VS Code の mcp.json は末尾カンマを許容するが JSON.parse は許容しない）
+      content = content.replace(/,(\s*[}\]])/g, "$1");
+      try {
+        mcpConfig = JSON.parse(content);
+      } catch (parseError) {
+        console.error("Failed to parse mcp.json:", parseError);
+        // パースエラーの場合は新規作成
+        mcpConfig = { servers: {}, inputs: [] };
+      }
     }
 
     // servers がなければ作成

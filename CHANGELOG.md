@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.2.3] - 2026-01-26
+
+### Fixed
+
+- mcp.json の末尾カンマを許容するように修正（自動登録が正常に動作）
+- JSON パースエラー時のエラーハンドリングを強化
+
 ## [0.2.2] - 2026-01-26
 
 ### Changed
