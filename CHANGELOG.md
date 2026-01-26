@@ -2,6 +2,12 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.3.2] - 2026-01-26
+
+### Improved
+
+- デモ GIF を最適化（6.31MB → 4.33MB）
+
 ## [0.3.1] - 2026-01-26
 
 ### Added
