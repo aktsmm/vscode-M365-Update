@@ -1,4 +1,4 @@
-# M365 UPDATE
+# M365 UPDATE MCP
 
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/yamapan.m365-update?style=flat-square&label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=yamapan.m365-update)
 [![Installs](https://img.shields.io/visual-studio-marketplace/i/yamapan.m365-update?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=yamapan.m365-update)

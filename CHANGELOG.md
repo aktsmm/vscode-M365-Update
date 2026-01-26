@@ -1,6 +1,12 @@
 # Changelog
 
-All notable changes to the "M365 UPDATE" extension will be documented in this file.
+All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
+
+## [0.2.2] - 2026-01-26
+
+### Changed
+
+- 拡張機能名を「M365 UPDATE MCP」に変更
 
 ## [0.2.1] - 2026-01-26
 

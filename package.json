@@ -1,8 +1,8 @@
 {
   "name": "m365-update",
-  "displayName": "M365 UPDATE",
+  "displayName": "M365 UPDATE MCP",
   "description": "Search and retrieve Microsoft 365 Roadmap features from Copilot Chat",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "yamapan",
   "license": "CC-BY-NC-4.0",
   "repository": {
