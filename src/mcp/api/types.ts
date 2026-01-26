@@ -95,11 +95,12 @@ export interface M365SearchFilters {
 }
 
 /**
- * 検索結果（軽量メタデータ）
+ * 検索結果（メタデータ + サマリ）
  */
 export interface M365SearchResultItem {
   id: number;
   title: string;
+  description: string | null;
   status: string;
   products: string[];
   platforms: string[];

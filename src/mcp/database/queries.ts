@@ -263,7 +263,8 @@ export function searchFeatures(
   db: Database.Database,
   filters: M365SearchFilters,
 ): { results: M365SearchResultItem[]; totalCount: number } {
-  const limit = Math.min(filters.limit ?? 20, 100);
+  // limit が指定されていない場合は全件返す（-1 = 全件）
+  const limit = filters.limit ?? 10000;
   const offset = filters.offset ?? 0;
 
   let whereClause = "1=1";
@@ -320,6 +321,7 @@ export function searchFeatures(
             SELECT 
                 f.id,
                 f.title,
+                f.description,
                 f.status,
                 f.general_availability_date as generalAvailabilityDate,
                 f.preview_availability_date as previewAvailabilityDate,
@@ -346,6 +348,7 @@ export function searchFeatures(
             SELECT 
                 f.id,
                 f.title,
+                f.description,
                 f.status,
                 f.general_availability_date as generalAvailabilityDate,
                 f.preview_availability_date as previewAvailabilityDate,
@@ -367,6 +370,7 @@ export function searchFeatures(
   const rows = db.prepare(sql).all(...params, limit, offset) as Array<{
     id: number;
     title: string;
+    description: string | null;
     status: string;
     generalAvailabilityDate: string | null;
     previewAvailabilityDate: string | null;
@@ -385,9 +389,17 @@ export function searchFeatures(
       .prepare("SELECT platform FROM feature_platforms WHERE feature_id = ?")
       .all(row.id) as { platform: string }[];
 
+    // description の最初の 200 文字をサマリとして返す
+    const descriptionSummary = row.description
+      ? row.description.length > 200
+        ? row.description.substring(0, 200) + "..."
+        : row.description
+      : null;
+
     return {
       id: row.id,
       title: row.title,
+      description: descriptionSummary,
       status: row.status,
       products: products.map((p) => p.product),
       platforms: platforms.map((p) => p.platform),

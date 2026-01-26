@@ -2,6 +2,18 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.3.0] - 2026-01-26
+
+### Added
+
+- 検索結果に description サマリ（200文字）を追加
+- デフォルトで全件返却（件数制限なし）
+- 日付未指定時は過去 1 ヶ月のアップデートを返却
+
+### Improved
+
+- LLM が Key Highlights を選びやすいよう全件のデータを提供
+
 ## [0.2.7] - 2026-01-26
 
 ### Improved

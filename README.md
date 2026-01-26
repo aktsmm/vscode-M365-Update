@@ -29,6 +29,8 @@
 - 🔄 **Auto Sync**: Automatically syncs data on first launch and every 24 hours
 - 📊 **Rich Filters**: Filter by product, status, and GA date
 - ⚙️ **Zero Config**: Automatically registers as MCP tool on installation
+- 📄 **Full Results**: Returns ALL matching results with description summary by default
+- 🌐 **Reference URLs**: Includes M365 Roadmap and MS Learn links (Japanese preferred)
 
 ## 📦 Installation
 
@@ -42,10 +44,16 @@
 Ask Copilot Chat like this:
 
 ```
-"Search for Copilot features in M365 Roadmap"
-"Show me Teams features releasing in 2026"
-"Get details for ID 548643"
+"What's new in M365?"                    → Last 1 month's updates (default)
+"Search for Copilot features"            → Keyword search
+"Show me Teams features releasing in 2026" → Date filter
+"Get details for ID 548643"              → Full details with MS Learn links
 ```
+
+### Default Behavior
+
+- **No filters**: Returns last 1 month's updates (15 items)
+- **All results include**: `roadmapUrl` to official M365 Roadmap page
 
 ## 🛠️ MCP Tools
 

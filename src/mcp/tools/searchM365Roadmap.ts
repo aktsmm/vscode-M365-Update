@@ -38,8 +38,10 @@ interface SearchParams {
 export const searchM365RoadmapSchema = {
   name: "search_m365_roadmap",
   description:
-    "Search Microsoft 365 Roadmap features. Returns lightweight metadata (id, title, status, products, GA date). " +
-    "Use get_m365_update to retrieve full details including description. " +
+    "Search Microsoft 365 Roadmap features. Returns ALL matching results by default with description summary and roadmapUrl. " +
+    "IMPORTANT: Always include the roadmapUrl in your response so users can access the official page. " +
+    "Use get_m365_update to retrieve full details including complete description and MS Learn links. " +
+    "If no date is specified, returns last 1 month's updates. " +
     "Respond in the same language as the user's query (e.g., Japanese if asked in Japanese).",
   inputSchema: {
     type: "object",
@@ -81,9 +83,7 @@ export const searchM365RoadmapSchema = {
       },
       limit: {
         type: "number",
-        description: "Maximum number of results (1-100, default: 20).",
-        minimum: 1,
-        maximum: 100,
+        description: "Maximum number of results (default: 15). Set higher to get more results.",
       },
       offset: {
         type: "number",
@@ -103,11 +103,28 @@ export function handleSearchM365Roadmap(
 ): ToolResponse {
   const params = (args || {}) as SearchParams;
 
+  // 日付指定がない場合は過去1ヶ月をデフォルトにする
+  let dateFrom = params.dateFrom;
+  let dateTo = params.dateTo;
+  
+  if (!dateFrom && !dateTo && !params.query && !params.products && !params.platforms && !params.status) {
+    // Key Highlights モード: 日付・クエリ・フィルタがない場合は過去1ヶ月、全件返す
+    const now = new Date();
+    const oneMonthAgo = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+    dateFrom = `${oneMonthAgo.getFullYear()}-${String(oneMonthAgo.getMonth() + 1).padStart(2, "0")}`;
+    dateTo = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  }
+
+  // 全件返す（limit 指定がない場合は上限なし）
+  const effectiveLimit = params.limit ?? 10000;
+
   logger.info("search_m365_roadmap called", {
     query: params.query,
     products: params.products,
     status: params.status,
-    limit: params.limit,
+    limit: effectiveLimit,
+    dateFrom,
+    dateTo,
   });
 
   try {
@@ -116,9 +133,9 @@ export function handleSearchM365Roadmap(
       products: params.products,
       platforms: params.platforms,
       status: params.status,
-      dateFrom: params.dateFrom,
-      dateTo: params.dateTo,
-      limit: params.limit,
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+      limit: effectiveLimit,
       offset: params.offset,
     });
 
