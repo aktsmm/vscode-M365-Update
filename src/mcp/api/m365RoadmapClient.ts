@@ -141,7 +141,7 @@ export async function fetchAllFeaturesWithETag(
   const startTime = Date.now();
 
   const { response, notModified } = await fetchWithRetry(M365_ROADMAP_API_URL, {
-    ifNoneMatch: useCache ? cachedETag ?? undefined : undefined,
+    ifNoneMatch: useCache ? (cachedETag ?? undefined) : undefined,
   });
 
   // 304 Not Modified - データ変更なし

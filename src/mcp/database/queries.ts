@@ -116,9 +116,9 @@ export function completeSyncFailure(
  */
 export function getStoredETag(db: Database.Database): string | null {
   try {
-    const row = db
-      .prepare("SELECT etag FROM api_cache WHERE id = 1")
-      .get() as { etag: string | null } | undefined;
+    const row = db.prepare("SELECT etag FROM api_cache WHERE id = 1").get() as
+      | { etag: string | null }
+      | undefined;
     return row?.etag ?? null;
   } catch {
     // テーブルが存在しない場合（古い DB）

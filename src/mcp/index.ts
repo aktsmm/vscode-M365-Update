@@ -22,7 +22,9 @@ const STALENESS_HOURS = 1; // 1時間ごとに同期試行
 /**
  * バックグラウンド同期を実行
  */
-async function backgroundSync(db: ReturnType<typeof initializeDatabase>): Promise<void> {
+async function backgroundSync(
+  db: ReturnType<typeof initializeDatabase>,
+): Promise<void> {
   if (!isSyncNeeded(db, STALENESS_HOURS)) {
     logger.info("Data is fresh, skipping background sync");
     return;
