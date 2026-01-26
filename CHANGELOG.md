@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE" extension will be documented in this file.
 
+## [0.2.1] - 2026-01-26
+
+### Fixed
+
+- 拡張機能のアクティベーションイベントを `onStartupFinished` に変更（自動登録が動作するように）
+- Windows/macOS/Linux 全ての OS に対応した mcp.json パス処理
+
 ## [0.2.0] - 2026-01-26
 
 ### Added
