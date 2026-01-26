@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.3.3] - 2026-01-26
+
+### Improved
+
+- Marketplace カテゴリを修正（Data Science → AI, Chat）
+- キーワードを追加（Microsoft, Updates）
+
 ## [0.3.2] - 2026-01-26
 
 ### Improved
