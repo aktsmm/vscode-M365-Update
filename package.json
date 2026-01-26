@@ -1,8 +1,8 @@
 {
   "name": "m365-update",
   "displayName": "M365 UPDATE",
-  "description": "Microsoft 365 ロードマップの検索・詳細取得を Copilot Chat から実行できる VS Code 拡張機能",
-  "version": "0.1.0",
+  "description": "Search and retrieve Microsoft 365 Roadmap features from Copilot Chat",
+  "version": "0.1.1",
   "publisher": "yamapan",
   "license": "CC-BY-NC-4.0",
   "repository": {

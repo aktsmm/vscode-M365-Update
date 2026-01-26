@@ -10,7 +10,6 @@ tsconfig.mcp.json
 scripts/**
 **/*.ts
 **/*.map
-node_modules/**
 *.db
 *.db-wal
 *.db-shm

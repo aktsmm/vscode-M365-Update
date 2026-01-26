@@ -1,10 +1,17 @@
 # M365 UPDATE
 
 [![VS Code Marketplace](https://img.shields.io/visual-studio-marketplace/v/yamapan.m365-update?style=flat-square&label=VS%20Code%20Marketplace)](https://marketplace.visualstudio.com/items?itemName=yamapan.m365-update)
+[![Installs](https://img.shields.io/visual-studio-marketplace/i/yamapan.m365-update?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=yamapan.m365-update)
 [![License: CC BY-NC 4.0](https://img.shields.io/badge/License-CC%20BY--NC%204.0-lightgrey.svg?style=flat-square)](LICENSE)
 
 <p align="center">
   <strong>Search and retrieve Microsoft 365 Roadmap features from Copilot Chat</strong>
+</p>
+
+<p align="center">
+  <a href="https://marketplace.visualstudio.com/items?itemName=yamapan.m365-update">
+    <img src="https://img.shields.io/badge/Install-VS%20Code%20Marketplace-007ACC?style=for-the-badge&logo=visual-studio-code" alt="Install from VS Code Marketplace">
+  </a>
 </p>
 
 <p align="center">

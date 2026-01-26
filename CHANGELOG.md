@@ -2,6 +2,17 @@
 
 All notable changes to the "M365 UPDATE" extension will be documented in this file.
 
+## [0.1.1] - 2026-01-26
+
+### Fixed
+
+- MCP Server の依存関係（node_modules）をパッケージに含めるよう修正
+- Copilot Chat のツール一覧に表示されない問題を解決
+
+### Added
+
+- README にインストールバッジとボタンを追加
+
 ## [0.1.0] - 2026-01-26
 
 ### Added
