@@ -2,11 +2,15 @@
  * 同期サービス
  *
  * M365 Roadmap API からデータを取得し、ローカル SQLite に同期
+ * ETag を使った条件付きリクエストで高速化
  */
 
 import type Database from "better-sqlite3";
 import type { M365RoadmapFeature } from "../api/types.js";
-import { fetchAllFeatures } from "../api/m365RoadmapClient.js";
+import {
+  fetchAllFeaturesWithETag,
+  setCachedETag,
+} from "../api/m365RoadmapClient.js";
 import {
   getSyncCheckpoint,
   startSync,
@@ -19,6 +23,9 @@ import {
   replaceFeatureReleaseRings,
   replaceFeatureAvailabilities,
   getFeatureCount,
+  getLastModified,
+  getStoredETag,
+  saveETag,
 } from "../database/queries.js";
 import * as logger from "../utils/logger.js";
 
@@ -49,15 +56,19 @@ function createSyncFailureResult(startTime: number, error: string): SyncResult {
 }
 
 /**
- * M365 Roadmap データを同期
+ * M365 Roadmap データを同期（ETag 対応で高速化）
  *
  * @param db データベースインスタンス
+ * @param force 強制同期（ETag キャッシュを無視）
  * @returns 同期結果
  */
-export async function performSync(db: Database.Database): Promise<SyncResult> {
+export async function performSync(
+  db: Database.Database,
+  force: boolean = false,
+): Promise<SyncResult> {
   const startTime = Date.now();
 
-  logger.info("Starting M365 Roadmap sync");
+  logger.info("Starting M365 Roadmap sync", { force });
 
   // 同期ロック取得
   const lockAcquired = startSync(db);
@@ -70,13 +81,44 @@ export async function performSync(db: Database.Database): Promise<SyncResult> {
     const checkpoint = getSyncCheckpoint(db);
     const recordCountBefore = getFeatureCount(db);
 
+    // 保存された ETag をメモリに復元
+    const storedETag = getStoredETag(db);
+    if (storedETag && !force) {
+      setCachedETag(storedETag);
+    }
+
     logger.info("Sync checkpoint", {
       lastSync: checkpoint?.lastSync,
       recordCountBefore,
+      storedETag: storedETag ? "exists" : "none",
     });
 
-    // API からフィーチャー取得
-    const features = await fetchAllFeatures();
+    // API からフィーチャー取得（ETag 対応）
+    const fetchResult = await fetchAllFeaturesWithETag(!force);
+
+    // 304 Not Modified - データ変更なし
+    if (!fetchResult.modified) {
+      const durationMs = Date.now() - startTime;
+      completeSyncSuccess(
+        db,
+        new Date().toISOString(),
+        recordCountBefore,
+        durationMs,
+      );
+      logger.info("Sync completed - no changes (304 Not Modified)", {
+        durationMs,
+      });
+
+      return {
+        success: true,
+        recordsProcessed: 0,
+        recordsInserted: 0,
+        recordsUpdated: 0,
+        durationMs,
+      };
+    }
+
+    const features = fetchResult.features;
 
     if (features.length === 0) {
       const durationMs = Date.now() - startTime;
@@ -97,9 +139,30 @@ export async function performSync(db: Database.Database): Promise<SyncResult> {
       };
     }
 
+    // 差分同期: modified 日時で変更分のみ更新
+    const lastModified = getLastModified(db);
+    const featuresToSync = lastModified
+      ? features.filter((f) => f.modified > lastModified)
+      : features;
+
+    logger.info("Differential sync", {
+      totalFeatures: features.length,
+      changedFeatures: featuresToSync.length,
+      lastModified,
+    });
+
     // トランザクションで同期
-    const result = syncFeaturesInTransaction(db, features);
+    const result =
+      featuresToSync.length > 0
+        ? syncFeaturesInTransaction(db, featuresToSync)
+        : { recordsProcessed: 0 };
+
     const recordCountAfter = getFeatureCount(db);
+
+    // ETag を保存
+    if (fetchResult.etag) {
+      saveETag(db, fetchResult.etag);
+    }
 
     // 最新の modified を取得
     const latestModified = features.reduce((latest, f) => {

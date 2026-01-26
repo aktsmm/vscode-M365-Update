@@ -117,3 +117,14 @@ CREATE TRIGGER IF NOT EXISTS m365_features_ad AFTER DELETE ON m365_features BEGI
     INSERT INTO m365_features_fts(m365_features_fts, rowid, title, description)
     VALUES ('delete', old.id, old.title, old.description);
 END;
+
+-- API キャッシュ情報（ETag など）
+CREATE TABLE IF NOT EXISTS api_cache (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    etag TEXT,
+    last_checked TEXT NOT NULL DEFAULT (datetime('now')),
+    updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- 初期キャッシュレコード
+INSERT OR IGNORE INTO api_cache (id, last_checked) VALUES (1, datetime('now'));

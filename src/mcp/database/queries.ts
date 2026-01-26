@@ -108,6 +108,55 @@ export function completeSyncFailure(
 }
 
 // ============================================================
+// ETag キャッシュ
+// ============================================================
+
+/**
+ * 保存された ETag を取得
+ */
+export function getStoredETag(db: Database.Database): string | null {
+  try {
+    const row = db
+      .prepare("SELECT etag FROM api_cache WHERE id = 1")
+      .get() as { etag: string | null } | undefined;
+    return row?.etag ?? null;
+  } catch {
+    // テーブルが存在しない場合（古い DB）
+    return null;
+  }
+}
+
+/**
+ * ETag を保存
+ */
+export function saveETag(db: Database.Database, etag: string): void {
+  try {
+    db.prepare(
+      `
+        INSERT INTO api_cache (id, etag, last_checked, updated_at)
+        VALUES (1, ?, datetime('now'), datetime('now'))
+        ON CONFLICT(id) DO UPDATE SET
+            etag = excluded.etag,
+            last_checked = datetime('now'),
+            updated_at = datetime('now')
+      `,
+    ).run(etag);
+  } catch {
+    // テーブルが存在しない場合は無視
+  }
+}
+
+/**
+ * 最新の modified 日時を取得
+ */
+export function getLastModified(db: Database.Database): string | null {
+  const row = db
+    .prepare("SELECT MAX(modified) as lastModified FROM m365_features")
+    .get() as { lastModified: string | null } | undefined;
+  return row?.lastModified ?? null;
+}
+
+// ============================================================
 // フィーチャー CRUD
 // ============================================================
 

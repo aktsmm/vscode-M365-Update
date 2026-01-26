@@ -7,7 +7,14 @@
  */
 
 import Database from "better-sqlite3";
-import { readFileSync, existsSync, mkdirSync, copyFileSync, unlinkSync, statSync } from "fs";
+import {
+  readFileSync,
+  existsSync,
+  mkdirSync,
+  copyFileSync,
+  unlinkSync,
+  statSync,
+} from "fs";
 import { join, dirname } from "path";
 import { fileURLToPath } from "url";
 
@@ -24,7 +31,7 @@ async function fetchAllFeatures() {
 
   const response = await fetch(API_URL, {
     headers: {
-      "Accept": "application/json",
+      Accept: "application/json",
       "User-Agent": "M365-Update-MCP-Server/0.3.0",
     },
   });
@@ -34,10 +41,10 @@ async function fetchAllFeatures() {
   }
 
   const data = await response.json();
-  
+
   // OData 形式のレスポンスから value 配列を取得
   const features = data.value || [];
-  
+
   console.log(`  Total features fetched: ${features.length}`);
   return features;
 }
@@ -56,7 +63,14 @@ function initializeDatabase(dbPath) {
   db.pragma("foreign_keys = ON");
 
   // スキーマ適用
-  const schemaPath = join(__dirname, "..", "src", "mcp", "database", "schema.sql");
+  const schemaPath = join(
+    __dirname,
+    "..",
+    "src",
+    "mcp",
+    "database",
+    "schema.sql",
+  );
   const schemaSql = readFileSync(schemaPath, "utf-8");
   db.exec(schemaSql);
 
@@ -75,19 +89,37 @@ function insertFeatures(db, features) {
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
-  const deleteProducts = db.prepare("DELETE FROM feature_products WHERE feature_id = ?");
-  const insertProduct = db.prepare("INSERT INTO feature_products (feature_id, product) VALUES (?, ?)");
+  const deleteProducts = db.prepare(
+    "DELETE FROM feature_products WHERE feature_id = ?",
+  );
+  const insertProduct = db.prepare(
+    "INSERT INTO feature_products (feature_id, product) VALUES (?, ?)",
+  );
 
-  const deletePlatforms = db.prepare("DELETE FROM feature_platforms WHERE feature_id = ?");
-  const insertPlatform = db.prepare("INSERT INTO feature_platforms (feature_id, platform) VALUES (?, ?)");
+  const deletePlatforms = db.prepare(
+    "DELETE FROM feature_platforms WHERE feature_id = ?",
+  );
+  const insertPlatform = db.prepare(
+    "INSERT INTO feature_platforms (feature_id, platform) VALUES (?, ?)",
+  );
 
-  const deleteCloudInstances = db.prepare("DELETE FROM feature_cloud_instances WHERE feature_id = ?");
-  const insertCloudInstance = db.prepare("INSERT INTO feature_cloud_instances (feature_id, cloud_instance) VALUES (?, ?)");
+  const deleteCloudInstances = db.prepare(
+    "DELETE FROM feature_cloud_instances WHERE feature_id = ?",
+  );
+  const insertCloudInstance = db.prepare(
+    "INSERT INTO feature_cloud_instances (feature_id, cloud_instance) VALUES (?, ?)",
+  );
 
-  const deleteReleaseRings = db.prepare("DELETE FROM feature_release_rings WHERE feature_id = ?");
-  const insertReleaseRing = db.prepare("INSERT INTO feature_release_rings (feature_id, release_ring) VALUES (?, ?)");
+  const deleteReleaseRings = db.prepare(
+    "DELETE FROM feature_release_rings WHERE feature_id = ?",
+  );
+  const insertReleaseRing = db.prepare(
+    "INSERT INTO feature_release_rings (feature_id, release_ring) VALUES (?, ?)",
+  );
 
-  const deleteAvailabilities = db.prepare("DELETE FROM feature_availabilities WHERE feature_id = ?");
+  const deleteAvailabilities = db.prepare(
+    "DELETE FROM feature_availabilities WHERE feature_id = ?",
+  );
   const insertAvailability = db.prepare(`
     INSERT INTO feature_availabilities (feature_id, ring, year, month)
     VALUES (?, ?, ?, ?)
@@ -115,8 +147,14 @@ function insertFeatures(db, features) {
 
       // メインテーブル
       upsertFeature.run(
-        featureId, title, description, status, gaDate,
-        previewDate, createdAt, modifiedAt
+        featureId,
+        title,
+        description,
+        status,
+        gaDate,
+        previewDate,
+        createdAt,
+        modifiedAt,
       );
 
       // Products
@@ -152,7 +190,12 @@ function insertFeatures(db, features) {
       const availabilities = feature.availabilities || [];
       for (const avail of availabilities) {
         // availabilities は {ring, year, month} 形式
-        insertAvailability.run(featureId, avail.ring || "", avail.year || 0, avail.month || "");
+        insertAvailability.run(
+          featureId,
+          avail.ring || "",
+          avail.year || 0,
+          avail.month || "",
+        );
       }
 
       // FTS 更新
@@ -168,10 +211,12 @@ function insertFeatures(db, features) {
  * 同期チェックポイント更新
  */
 function updateSyncCheckpoint(db, featureCount) {
-  db.prepare(`
+  db.prepare(
+    `
     INSERT OR REPLACE INTO sync_checkpoint (id, last_sync, record_count)
     VALUES (1, ?, ?)
-  `).run(new Date().toISOString(), featureCount);
+  `,
+  ).run(new Date().toISOString(), featureCount);
 }
 
 /**
