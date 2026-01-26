@@ -2,6 +2,14 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.2.6] - 2026-01-26
+
+### Added
+
+- 検索結果と詳細取得に参考 URL を追加
+  - M365 Roadmap ページ URL（日本語/英語）
+  - MS Learn 検索 URL（日本語/英語）
+
 ## [0.2.5] - 2026-01-26
 
 ### Improved

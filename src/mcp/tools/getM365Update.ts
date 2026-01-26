@@ -14,13 +14,35 @@ import {
 import * as logger from "../utils/logger.js";
 
 /**
+ * M365 Roadmap の参考 URL を生成
+ */
+function generateReferenceUrls(id: number, userLang?: string): {
+  roadmapUrl: string;
+  roadmapUrlJa: string;
+  learnSearchUrl: string;
+  learnSearchUrlJa: string;
+} {
+  // 日本語を優先するかどうか
+  const preferJa = userLang?.toLowerCase().includes("ja") || 
+                   userLang?.toLowerCase().includes("japanese") ||
+                   userLang?.toLowerCase().includes("日本語");
+
+  return {
+    roadmapUrl: `https://www.microsoft.com/en-us/microsoft-365/roadmap?filters=&searchterms=${id}`,
+    roadmapUrlJa: `https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=&searchterms=${id}`,
+    learnSearchUrl: `https://learn.microsoft.com/en-us/search/?terms=${id}`,
+    learnSearchUrlJa: `https://learn.microsoft.com/ja-jp/search/?terms=${id}`,
+  };
+}
+
+/**
  * ツールスキーマ
  */
 export const getM365UpdateSchema = {
   name: "get_m365_update",
   description:
     "Retrieve complete details of a specific M365 Roadmap feature by ID. " +
-    "Includes full description, platforms, cloud instances, and availability details. " +
+    "Includes full description, platforms, cloud instances, availability details, and reference URLs. " +
     "Use after search_m365_roadmap to get detailed content. " +
     "Respond in the same language as the user's query (e.g., Japanese if asked in Japanese).",
   inputSchema: {
@@ -59,9 +81,23 @@ export function handleGetM365Update(
       return createErrorResponse(`Feature not found: ${params.id}`);
     }
 
+    // 参考 URL を生成
+    const urls = generateReferenceUrls(params.id);
+
+    // レスポンスに参考 URL を追加
+    const responseWithUrls = {
+      ...feature,
+      references: {
+        roadmapUrl: urls.roadmapUrlJa,
+        roadmapUrlEn: urls.roadmapUrl,
+        learnSearchUrl: urls.learnSearchUrlJa,
+        learnSearchUrlEn: urls.learnSearchUrl,
+      },
+    };
+
     logger.info("get_m365_update completed", { id: params.id });
 
-    return createSuccessResponse(feature);
+    return createSuccessResponse(responseWithUrls);
   } catch (error) {
     const err = error as Error;
     logger.error("get_m365_update failed", {

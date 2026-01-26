@@ -127,8 +127,14 @@ export function handleSearchM365Roadmap(
       totalCount: result.totalCount,
     });
 
+    // 各結果に参考 URL を追加
+    const resultsWithUrls = result.results.map((item) => ({
+      ...item,
+      roadmapUrl: `https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=&searchterms=${item.id}`,
+    }));
+
     return createSuccessResponse({
-      results: result.results,
+      results: resultsWithUrls,
       totalCount: result.totalCount,
       hasMore: result.results.length < result.totalCount,
       // フィルターヘルプ
