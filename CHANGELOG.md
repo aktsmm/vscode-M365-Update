@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE" extension will be documented in this file.
 
+## [0.2.0] - 2026-01-26
+
+### Added
+
+- 🎉 **自動 MCP サーバー登録**: 拡張機能インストール時に自動で `mcp.json` に登録
+- Copilot Chat のツール一覧に自動表示されるようになりました
+
 ## [0.1.2] - 2026-01-26
 
 ### Improved

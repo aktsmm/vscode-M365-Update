@@ -5,12 +5,70 @@
  */
 
 import * as vscode from "vscode";
+import * as fs from "fs";
+import * as path from "path";
+import * as os from "os";
+
+/**
+ * MCP 設定ファイルに m365-update サーバーを登録
+ */
+async function registerMcpServer(context: vscode.ExtensionContext): Promise<void> {
+  const mcpJsonPath = path.join(os.homedir(), "AppData", "Roaming", "Code", "User", "mcp.json");
+  
+  // 拡張機能の MCP サーバーパス
+  const mcpServerPath = path.join(context.extensionPath, "dist", "mcp", "index.js");
+  
+  try {
+    let mcpConfig: { servers?: Record<string, unknown>; inputs?: unknown[] } = { servers: {}, inputs: [] };
+    
+    // 既存の mcp.json を読み込み
+    if (fs.existsSync(mcpJsonPath)) {
+      const content = fs.readFileSync(mcpJsonPath, "utf-8");
+      mcpConfig = JSON.parse(content);
+    }
+    
+    // servers がなければ作成
+    if (!mcpConfig.servers) {
+      mcpConfig.servers = {};
+    }
+    
+    // m365-update が既に登録されているか確認
+    const existingConfig = mcpConfig.servers["m365-update"] as { args?: string[] } | undefined;
+    const currentPath = existingConfig?.args?.[0];
+    
+    // パスが異なる場合（バージョンアップなど）のみ更新
+    if (currentPath !== mcpServerPath) {
+      mcpConfig.servers["m365-update"] = {
+        command: "node",
+        args: [mcpServerPath],
+        type: "stdio"
+      };
+      
+      fs.writeFileSync(mcpJsonPath, JSON.stringify(mcpConfig, null, 2), "utf-8");
+      
+      if (!currentPath) {
+        vscode.window.showInformationMessage(
+          "M365 UPDATE: MCP server registered. Please reload VS Code to enable the tool in Copilot Chat."
+        );
+      } else {
+        vscode.window.showInformationMessage(
+          "M365 UPDATE: MCP server path updated. Please reload VS Code."
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Failed to register MCP server:", error);
+  }
+}
 
 /**
  * 拡張機能のアクティベーション
  */
 export function activate(context: vscode.ExtensionContext): void {
   console.log("M365 UPDATE extension is now active");
+
+  // MCP サーバーを自動登録
+  registerMcpServer(context);
 
   // Sync Roadmap コマンド登録
   const syncCommand = vscode.commands.registerCommand(
