@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.2.4] - 2026-01-26
+
+### Fixed
+
+- 拡張機能のアクティベートエラーを修正（`type: module` を削除）
+- mcp.json への自動登録が正常に動作するようになりました
+
 ## [0.2.3] - 2026-01-26
 
 ### Fixed

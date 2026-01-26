@@ -15,6 +15,8 @@ import * as os from "os";
 async function registerMcpServer(
   context: vscode.ExtensionContext,
 ): Promise<void> {
+  console.log("registerMcpServer called");
+  
   // OS に応じた mcp.json パスを決定
   let mcpJsonPath: string;
   if (process.platform === "win32") {
@@ -83,6 +85,10 @@ async function registerMcpServer(
 
     // パスが異なる場合（バージョンアップなど）のみ更新
     if (currentPath !== mcpServerPath) {
+      console.log("Registering MCP server...");
+      console.log("mcp.json path:", mcpJsonPath);
+      console.log("MCP server path:", mcpServerPath);
+      
       mcpConfig.servers["m365-update"] = {
         command: "node",
         args: [mcpServerPath],
@@ -94,6 +100,8 @@ async function registerMcpServer(
         JSON.stringify(mcpConfig, null, 2),
         "utf-8",
       );
+      
+      console.log("MCP server registered successfully");
 
       if (!currentPath) {
         vscode.window.showInformationMessage(
@@ -114,10 +122,14 @@ async function registerMcpServer(
  * 拡張機能のアクティベーション
  */
 export function activate(context: vscode.ExtensionContext): void {
-  console.log("M365 UPDATE extension is now active");
+  console.log("M365 UPDATE MCP extension is now active");
+  console.log("Extension path:", context.extensionPath);
 
   // MCP サーバーを自動登録
-  registerMcpServer(context);
+  registerMcpServer(context).catch((error) => {
+    console.error("Failed to register MCP server:", error);
+    vscode.window.showErrorMessage(`M365 UPDATE: Failed to register MCP server: ${error.message}`);
+  });
 
   // Sync Roadmap コマンド登録
   const syncCommand = vscode.commands.registerCommand(
