@@ -28,12 +28,14 @@
 - 🚀 **Fast Search**: Local full-text search powered by SQLite + FTS5
 - 🔄 **Auto Sync**: Automatically syncs data on first launch and every 24 hours
 - 📊 **Rich Filters**: Filter by product, status, and GA date
+- ⚙️ **Zero Config**: Automatically registers as MCP tool on installation
 
 ## 📦 Installation
 
 1. Search for "M365 UPDATE" in VS Code Extension Marketplace
 2. Or run: `ext install yamapan.m365-update`
 3. Reload VS Code
+4. The tool automatically appears in Copilot Chat's tool list! 🎉
 
 ## 🎯 Usage
 

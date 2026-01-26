@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.2.5] - 2026-01-26
+
+### Improved
+
+- README に自動登録機能の説明を追加
+- 「設定不要」の特徴を追加
+
 ## [0.2.4] - 2026-01-26
 
 ### Fixed
