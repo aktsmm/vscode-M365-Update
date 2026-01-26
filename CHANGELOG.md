@@ -2,6 +2,13 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.2.7] - 2026-01-26
+
+### Improved
+
+- README に参考 URL 機能の説明を追加
+- レスポンス例を追加
+
 ## [0.2.6] - 2026-01-26
 
 ### Added

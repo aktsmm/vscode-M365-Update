@@ -50,8 +50,24 @@ Copilot Chat で以下のように話しかけてください：
 | ツール                | 説明                                         |
 | --------------------- | -------------------------------------------- |
 | `search_m365_roadmap` | キーワード・フィルタで検索（軽量メタデータ） |
-| `get_m365_update`     | ID 指定で詳細取得（フル説明）                |
+| `get_m365_update`     | ID 指定で詳細取得（参考 URL 付き）          |
 | `sync_m365_roadmap`   | API からデータ同期                           |
+
+### レスポンスに参考 URL が含まれます
+
+- 🇯🇵 **M365 Roadmap ページ**（日本語/英語）
+- 📚 **MS Learn 検索**（日本語/英語）
+
+```json
+{
+  "id": 487848,
+  "title": "Copilot can now answer questions...",
+  "roadmapUrl": "https://www.microsoft.com/ja-jp/microsoft-365/roadmap?...",
+  "references": {
+    "learnSearchUrl": "https://learn.microsoft.com/ja-jp/search/?terms=..."
+  }
+}
+```
 
 ### search_m365_roadmap パラメータ
 

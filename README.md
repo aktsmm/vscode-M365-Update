@@ -52,8 +52,24 @@ Ask Copilot Chat like this:
 | Tool                  | Description                                           |
 | --------------------- | ----------------------------------------------------- |
 | `search_m365_roadmap` | Search with keywords & filters (lightweight metadata) |
-| `get_m365_update`     | Get full details by ID                                |
+| `get_m365_update`     | Get full details by ID with reference URLs            |
 | `sync_m365_roadmap`   | Sync data from API                                    |
+
+### Response includes reference URLs
+
+- 🇯🇵 **M365 Roadmap page** (Japanese/English)
+- 📚 **MS Learn search** (Japanese/English)
+
+```json
+{
+  "id": 487848,
+  "title": "Copilot can now answer questions...",
+  "roadmapUrl": "https://www.microsoft.com/ja-jp/microsoft-365/roadmap?...",
+  "references": {
+    "learnSearchUrl": "https://learn.microsoft.com/ja-jp/search/?terms=..."
+  }
+}
+```
 
 ### search_m365_roadmap Parameters
 

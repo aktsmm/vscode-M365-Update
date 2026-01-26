@@ -16,16 +16,20 @@ import * as logger from "../utils/logger.js";
 /**
  * M365 Roadmap の参考 URL を生成
  */
-function generateReferenceUrls(id: number, userLang?: string): {
+function generateReferenceUrls(
+  id: number,
+  userLang?: string,
+): {
   roadmapUrl: string;
   roadmapUrlJa: string;
   learnSearchUrl: string;
   learnSearchUrlJa: string;
 } {
   // 日本語を優先するかどうか
-  const preferJa = userLang?.toLowerCase().includes("ja") || 
-                   userLang?.toLowerCase().includes("japanese") ||
-                   userLang?.toLowerCase().includes("日本語");
+  const preferJa =
+    userLang?.toLowerCase().includes("ja") ||
+    userLang?.toLowerCase().includes("japanese") ||
+    userLang?.toLowerCase().includes("日本語");
 
   return {
     roadmapUrl: `https://www.microsoft.com/en-us/microsoft-365/roadmap?filters=&searchterms=${id}`,
