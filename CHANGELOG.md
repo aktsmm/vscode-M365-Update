@@ -2,6 +2,14 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.3.6] - 2026-01-27
+
+### Improved
+
+- ⚡ **高速同期**: バックグラウンド同期で起動をブロックしない
+- 📊 **差分更新**: 変更分のみDB書き込み（パフォーマンス向上）
+- 🔧 ETag キャッシュ対応準備
+
 ## [0.3.5] - 2026-01-27
 
 ### Added
