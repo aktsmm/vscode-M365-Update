@@ -40,15 +40,21 @@ export async function handleSyncM365Roadmap(
   db: Database.Database,
   args: unknown,
 ): Promise<ToolResponse> {
-  const params = args as { force?: boolean };
+  const params = (args ?? {}) as { force?: boolean };
 
-  logger.info("sync_m365_roadmap called", { force: params.force });
+  if (params.force !== undefined && typeof params.force !== "boolean") {
+    return createErrorResponse("Invalid parameter: force (must be a boolean)");
+  }
+
+  const forceSync = params.force ?? false;
+
+  logger.info("sync_m365_roadmap called", { force: forceSync });
 
   try {
     // 現在のステータス確認
     const status = getSyncStatus(db);
 
-    if (!params.force && status && status.hoursSinceSync < 1) {
+    if (!forceSync && status && status.hoursSinceSync < 1) {
       logger.info("Data is fresh, skipping sync", {
         hoursSinceSync: status.hoursSinceSync,
       });
@@ -62,7 +68,7 @@ export async function handleSyncM365Roadmap(
     }
 
     // 同期実行
-    const result = await performSync(db);
+    const result = await performSync(db, forceSync);
 
     if (!result.success) {
       return createErrorResponse(`Sync failed: ${result.error}`);

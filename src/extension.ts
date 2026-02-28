@@ -53,6 +53,11 @@ async function registerMcpServer(
     .replace(/\\/g, "/");
 
   try {
+    const mcpConfigDir = path.dirname(mcpJsonPath);
+    if (!fs.existsSync(mcpConfigDir)) {
+      fs.mkdirSync(mcpConfigDir, { recursive: true });
+    }
+
     let mcpConfig: { servers?: Record<string, unknown>; inputs?: unknown[] } = {
       servers: {},
       inputs: [],

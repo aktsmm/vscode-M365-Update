@@ -16,21 +16,12 @@ import * as logger from "../utils/logger.js";
 /**
  * M365 Roadmap の参考 URL を生成
  */
-function generateReferenceUrls(
-  id: number,
-  userLang?: string,
-): {
+function generateReferenceUrls(id: number): {
   roadmapUrl: string;
   roadmapUrlJa: string;
   learnSearchUrl: string;
   learnSearchUrlJa: string;
 } {
-  // 日本語を優先するかどうか
-  const preferJa =
-    userLang?.toLowerCase().includes("ja") ||
-    userLang?.toLowerCase().includes("japanese") ||
-    userLang?.toLowerCase().includes("日本語");
-
   return {
     roadmapUrl: `https://www.microsoft.com/en-us/microsoft-365/roadmap?filters=&searchterms=${id}`,
     roadmapUrlJa: `https://www.microsoft.com/ja-jp/microsoft-365/roadmap?filters=&searchterms=${id}`,
@@ -53,9 +44,9 @@ export const getM365UpdateSchema = {
     type: "object",
     properties: {
       id: {
-        type: "number",
+        type: "integer",
         description:
-          "Unique identifier of the M365 Roadmap feature (required).",
+          "Unique identifier of the M365 Roadmap feature (required, positive integer).",
       },
     },
     required: ["id"],
@@ -69,10 +60,16 @@ export function handleGetM365Update(
   db: Database.Database,
   args: unknown,
 ): ToolResponse {
-  const params = args as { id?: number };
+  const params = (args ?? {}) as { id?: number };
 
-  if (!params.id) {
-    return createErrorResponse("Missing required parameter: id");
+  if (
+    typeof params.id !== "number" ||
+    !Number.isInteger(params.id) ||
+    params.id <= 0
+  ) {
+    return createErrorResponse(
+      "Invalid required parameter: id (must be a positive integer)",
+    );
   }
 
   logger.info("get_m365_update called", { id: params.id });

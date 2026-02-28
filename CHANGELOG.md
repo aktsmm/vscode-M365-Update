@@ -2,6 +2,18 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.3.7] - 2026-02-28
+
+### Fixed
+
+- `get_m365_update` の `id` スキーマ型を `integer` に修正し、入力バリデーション説明を明確化
+- 拡張機能初回起動時に `mcp.json` 親ディレクトリが存在しない場合でも自動作成して登録失敗を回避
+
+### Improved
+
+- `search_m365_roadmap` のツール説明を実装挙動と整合（Key Highlights 条件と既定上限 10000 件を明記）
+- ツールスキーマ型整合の回帰テストを追加
+
 ## [0.3.6] - 2026-01-27
 
 ### Improved

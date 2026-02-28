@@ -11,6 +11,21 @@ import type {
   M365SearchResultItem,
 } from "../api/types.js";
 
+function escapeLikePattern(value: string): string {
+  return value.replace(/[\\%_]/g, "\\$&");
+}
+
+export function buildFtsPrefixQuery(query: string): string | null {
+  const tokens = query
+    .trim()
+    .split(/\s+/)
+    .map((token) => token.replace(/[^\p{L}\p{N}_-]/gu, ""))
+    .filter((token) => /[\p{L}\p{N}]/u.test(token))
+    .map((token) => `${token}*`);
+
+  return tokens.length > 0 ? tokens.join(" ") : null;
+}
+
 // ============================================================
 // 同期チェックポイント
 // ============================================================
@@ -321,8 +336,18 @@ export function searchFeatures(
 
   // FTS 検索
   let useFts = false;
+  let ftsQuery: string | null = null;
   if (filters.query && filters.query.trim()) {
-    useFts = true;
+    const builtFtsQuery = buildFtsPrefixQuery(filters.query);
+    if (builtFtsQuery) {
+      useFts = true;
+      ftsQuery = builtFtsQuery;
+    } else {
+      const likeQuery = `%${escapeLikePattern(filters.query.trim())}%`;
+      whereClause +=
+        " AND (f.title LIKE ? ESCAPE '\\\\' OR COALESCE(f.description, '') LIKE ? ESCAPE '\\\\')";
+      params.push(likeQuery, likeQuery);
+    }
   }
 
   // ステータスフィルタ
@@ -359,13 +384,6 @@ export function searchFeatures(
   let countSql: string;
 
   if (useFts) {
-    // FTS 検索を使用
-    const ftsQuery = filters
-      .query!.trim()
-      .split(/\s+/)
-      .map((w) => `${w}*`)
-      .join(" ");
-
     sql = `
             SELECT 
                 f.id,
@@ -391,7 +409,7 @@ export function searchFeatures(
             AND ${whereClause}
         `;
 
-    params.unshift(ftsQuery);
+        params.unshift(ftsQuery);
   } else {
     sql = `
             SELECT 

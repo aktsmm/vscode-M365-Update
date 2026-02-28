@@ -12,6 +12,9 @@ import * as logger from "../utils/logger.js";
 const M365_ROADMAP_API_URL =
   "https://www.microsoft.com/releasecommunications/api/v2/m365";
 
+/** HTTP User-Agent */
+const USER_AGENT = "M365-Update-MCP-Server";
+
 /** リトライ設定 */
 const MAX_RETRIES = 3;
 const RETRY_DELAY_MS = 1000;
@@ -58,13 +61,13 @@ async function fetchWithRetry(
   const { timeoutMs = 30000, ifNoneMatch } = options;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
+    try {
       const headers: Record<string, string> = {
         Accept: "application/json",
-        "User-Agent": "M365-Update-MCP-Server/0.3.0",
+        "User-Agent": USER_AGENT,
       };
 
       // 条件付きリクエスト（ETag）
@@ -76,8 +79,6 @@ async function fetchWithRetry(
         signal: controller.signal,
         headers,
       });
-
-      clearTimeout(timeoutId);
 
       // 304 Not Modified = データ変更なし
       if (response.status === 304) {
@@ -110,6 +111,8 @@ async function fetchWithRetry(
       });
 
       await sleep(delay);
+    } finally {
+      clearTimeout(timeoutId);
     }
   }
 

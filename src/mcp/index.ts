@@ -8,13 +8,32 @@
 
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { createMCPServer } from "./server.js";
-import { initializeDatabase, closeDatabase } from "./database/database.js";
+import { getDatabase, closeDatabase } from "./database/database.js";
 import { isSyncNeeded, performSync } from "./services/sync.service.js";
 import * as logger from "./utils/logger.js";
+import { readFileSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // パッケージ情報
 const PACKAGE_NAME = "m365-update";
-const PACKAGE_VERSION = "0.3.5";
+
+function getPackageVersion(): string {
+  try {
+    const packageJsonPath = join(__dirname, "..", "..", "package.json");
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8")) as {
+      version?: string;
+    };
+    return packageJson.version ?? "unknown";
+  } catch {
+    return "unknown";
+  }
+}
+
+const PACKAGE_VERSION = getPackageVersion();
 
 // データ古さの閾値（時間）- バックグラウンド同期用
 const STALENESS_HOURS = 1; // 1時間ごとに同期試行
@@ -23,7 +42,7 @@ const STALENESS_HOURS = 1; // 1時間ごとに同期試行
  * バックグラウンド同期を実行
  */
 async function backgroundSync(
-  db: ReturnType<typeof initializeDatabase>,
+  db: ReturnType<typeof getDatabase>,
 ): Promise<void> {
   if (!isSyncNeeded(db, STALENESS_HOURS)) {
     logger.info("Data is fresh, skipping background sync");
@@ -55,7 +74,7 @@ async function main(): Promise<void> {
   });
 
   // データベース初期化（seed.db からコピーされる場合あり）
-  const db = initializeDatabase();
+  const db = getDatabase();
 
   // MCP Server 作成（同期を待たずにすぐ起動）
   const server = createMCPServer({

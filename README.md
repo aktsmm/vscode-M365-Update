@@ -26,7 +26,7 @@
 
 - 🔍 **Natural Language Search**: Just ask "What's new in Teams?" in Copilot Chat
 - 🚀 **Fast Search**: Local full-text search powered by SQLite + FTS5
-- 🔄 **Auto Sync**: Automatically syncs data on first launch and every 24 hours
+- 🔄 **Auto Sync**: Automatically syncs data on startup when local cache is older than 1 hour
 - 📊 **Rich Filters**: Filter by product, status, and GA date
 - ⚙️ **Zero Config**: Automatically registers as MCP tool on installation
 - 📄 **Full Results**: Returns ALL matching results with description summary by default
@@ -82,15 +82,15 @@ Ask Copilot Chat like this:
 
 ### search_m365_roadmap Parameters
 
-| Parameter   | Type     | Description                                              |
-| ----------- | -------- | -------------------------------------------------------- |
-| `query`     | string   | Search keyword (full-text search on title & description) |
-| `products`  | string[] | Filter by products (e.g., `["Microsoft Teams"]`)         |
-| `platforms` | string[] | Filter by platforms                                      |
-| `status`    | string   | Status (`In development`, `Rolling out`, `Launched`)     |
-| `dateFrom`  | string   | GA date range start (`YYYY-MM`)                          |
-| `dateTo`    | string   | GA date range end (`YYYY-MM`)                            |
-| `limit`     | number   | Max results (1-100, default: 20)                         |
+| Parameter   | Type     | Description                                                    |
+| ----------- | -------- | -------------------------------------------------------------- |
+| `query`     | string   | Search keyword (full-text search on title & description)       |
+| `products`  | string[] | Filter by products (e.g., `["Microsoft Teams"]`)               |
+| `platforms` | string[] | Filter by platforms                                            |
+| `status`    | string   | Status (`In development`, `Rolling out`, `Launched`)           |
+| `dateFrom`  | string   | GA date range start (`YYYY-MM`)                                |
+| `dateTo`    | string   | GA date range end (`YYYY-MM`)                                  |
+| `limit`     | number   | Max results (1-10000, default: all matching items up to 10000) |
 
 ## 📊 Data Source
 
@@ -124,4 +124,3 @@ npm run inspect
 ---
 
 © 2026 yamapan (aktsmm)
-

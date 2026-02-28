@@ -26,7 +26,7 @@
 
 - 🔍 **自然言語検索**: Copilot Chat で「Teams の新機能を教えて」と聞くだけ
 - 🚀 **高速検索**: SQLite + FTS5 によるローカル全文検索
-- 🔄 **自動同期**: 初回起動時・24時間経過後に自動でデータ同期
+- 🔄 **自動同期**: 起動時にローカルキャッシュが1時間以上古い場合、自動でデータ同期
 - 📊 **豊富なフィルタ**: 製品、ステータス、GA日付で絞り込み
 - ⚙️ **設定不要**: インストールするだけで MCP ツールとして自動登録
 - 📄 **全件返却**: デフォルトで全件の結果を説明付きで返却
@@ -82,15 +82,15 @@ Copilot Chat で以下のように話しかけてください：
 
 ### search_m365_roadmap パラメータ
 
-| パラメータ  | 型       | 説明                                                      |
-| ----------- | -------- | --------------------------------------------------------- |
-| `query`     | string   | 検索キーワード（タイトル・説明を全文検索）                |
-| `products`  | string[] | 製品フィルタ（例: `["Microsoft Teams"]`）                 |
-| `platforms` | string[] | プラットフォームフィルタ                                  |
-| `status`    | string   | ステータス（`In development`, `Rolling out`, `Launched`） |
-| `dateFrom`  | string   | GA 日付範囲（開始）`YYYY-MM`                              |
-| `dateTo`    | string   | GA 日付範囲（終了）`YYYY-MM`                              |
-| `limit`     | number   | 最大件数（1-100、デフォルト: 20）                         |
+| パラメータ  | 型       | 説明                                                       |
+| ----------- | -------- | ---------------------------------------------------------- |
+| `query`     | string   | 検索キーワード（タイトル・説明を全文検索）                 |
+| `products`  | string[] | 製品フィルタ（例: `["Microsoft Teams"]`）                  |
+| `platforms` | string[] | プラットフォームフィルタ                                   |
+| `status`    | string   | ステータス（`In development`, `Rolling out`, `Launched`）  |
+| `dateFrom`  | string   | GA 日付範囲（開始）`YYYY-MM`                               |
+| `dateTo`    | string   | GA 日付範囲（終了）`YYYY-MM`                               |
+| `limit`     | number   | 最大件数（1-10000、デフォルト: 一致した項目を最大10000件） |
 
 ## 📊 データソース
 
@@ -124,4 +124,3 @@ npm run inspect
 ---
 
 © 2026 yamapan (aktsmm)
-
