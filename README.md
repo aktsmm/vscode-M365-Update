@@ -29,7 +29,7 @@
 - 🔄 **Auto Sync**: Automatically syncs data on startup when local cache is older than 1 hour
 - 📊 **Rich Filters**: Filter by product, status, and GA date
 - ⚙️ **Zero Config**: Automatically registers as MCP tool on installation
-- 📄 **Full Results**: Returns ALL matching results with description summary by default
+- 📄 **Broad Default Results**: Returns up to 10000 matching results with description summary by default
 - 🌐 **Reference URLs**: Includes M365 Roadmap and MS Learn links (Japanese preferred)
 
 ## 📦 Installation
@@ -52,7 +52,7 @@ Ask Copilot Chat like this:
 
 ### Default Behavior
 
-- **No filters**: Returns last 1 month's updates (ALL items with description summary)
+- **No filters**: Returns last 1 month's updates (up to 10000 items with description summary)
 - **All results include**: `roadmapUrl` to official M365 Roadmap page
 - **Description summary**: First 200 characters for quick overview
 

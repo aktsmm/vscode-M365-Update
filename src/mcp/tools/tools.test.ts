@@ -52,6 +52,35 @@ describe("Tool Handlers", () => {
   });
 
   describe("search_m365_roadmap", () => {
+    it("args 未指定時は key highlights モードで過去1ヶ月を検索すること", () => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date("2026-05-27T12:00:00.000Z"));
+      vi.mocked(searchFeatures).mockReturnValue({
+        results: [],
+        totalCount: 0,
+      });
+
+      try {
+        handleSearchM365Roadmap(mockDb, undefined);
+
+        expect(searchFeatures).toHaveBeenCalledWith(
+          mockDb,
+          expect.objectContaining({
+            dateFrom: "2026-04",
+            dateTo: "2026-05",
+            limit: 10000,
+            offset: 0,
+            platforms: undefined,
+            products: undefined,
+            query: undefined,
+            status: undefined,
+          }),
+        );
+      } finally {
+        vi.useRealTimers();
+      }
+    });
+
     it("不正な limit でバリデーションエラーを返すこと", () => {
       const response = handleSearchM365Roadmap(mockDb, { limit: 0 });
 
@@ -159,7 +188,9 @@ describe("Tool Handlers", () => {
       const response = await handleSyncM365Roadmap(mockDb, undefined);
 
       expect(performSync).not.toHaveBeenCalled();
-      const payload = JSON.parse(response.content[0].text) as { message: string };
+      const payload = JSON.parse(response.content[0].text) as {
+        message: string;
+      };
       expect(payload.message).toContain("sync skipped");
     });
   });

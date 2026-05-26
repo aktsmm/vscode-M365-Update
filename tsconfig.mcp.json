@@ -15,5 +15,10 @@
     "sourceMap": true
   },
   "include": ["src/mcp/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "exclude": [
+    "node_modules",
+    "dist",
+    "src/mcp/**/*.test.ts",
+    "src/mcp/test-*.ts"
+  ]
 }

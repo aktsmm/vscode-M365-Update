@@ -5,6 +5,8 @@ dist/
 *.db
 *.db-wal
 *.db-shm
+artifacts/
+.audit*.json
 
 # Test files
 src/mcp/test-*.ts

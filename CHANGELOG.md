@@ -2,6 +2,20 @@
 
 All notable changes to the "M365 UPDATE MCP" extension will be documented in this file.
 
+## [0.3.8] - 2026-05-27
+
+### Fixed
+
+- VSIX packaging now includes `resources/seed.db` reliably while excluding temporary database sidecars.
+- Restored `npm run lint` with an ESLint flat config and removed a stale unused import.
+- Resolved production dependency vulnerabilities.
+
+### Improved
+
+- Added deterministic VSIX output under `artifacts/vsix/` and strengthened payload hygiene checks.
+- Clean `dist/mcp` before MCP builds to avoid stale runtime artifacts.
+- Added regression coverage for packaging rules, API retry / 304 handling, and default search behavior.
+
 ## [0.3.7] - 2026-02-28
 
 ### Fixed
@@ -57,7 +71,7 @@ All notable changes to the "M365 UPDATE MCP" extension will be documented in thi
 ### Added
 
 - 検索結果に description サマリ（200文字）を追加
-- デフォルトで全件返却（件数制限なし）
+- デフォルトで最大10000件を返却
 - 日付未指定時は過去 1 ヶ月のアップデートを返却
 
 ### Improved
@@ -69,7 +83,7 @@ All notable changes to the "M365 UPDATE MCP" extension will be documented in thi
 ### Improved
 
 - 検索結果に description サマリ（200文字）を追加
-- デフォルトで全件返却（フィルタなしの場合は過去1ヶ月）
+- デフォルトで最大10000件を返却（フィルタなしの場合は過去1ヶ月）
 - LLM が Key Highlights を選びやすいように改善
 
 ## [0.2.7] - 2026-01-26
