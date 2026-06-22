@@ -5,6 +5,7 @@
 [![Installs](https://badgen.net/vs-marketplace/i/yamapan.m365-update)](https://marketplace.visualstudio.com/items?itemName=yamapan.m365-update)
 [![License](https://badgen.net/badge/License/CC%20BY-NC-SA%204.0/gray)](LICENSE)
 [![GitHub](https://badgen.net/badge/GitHub/Source/black)](https://github.com/aktsmm/vscode-M365-Update)
+[![Stars](https://badgen.net/github/stars/aktsmm/vscode-M365-Update)](https://github.com/aktsmm/vscode-M365-Update)
 
 <p align="center">
   <strong>Microsoft 365 ロードマップを Copilot Chat から検索・取得</strong>
